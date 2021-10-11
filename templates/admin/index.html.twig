@@ -1,0 +1,21 @@
+{% extends "main.html.twig" %}
+
+{% block title %}{{ 'dashboard.label'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">{{ block('title') }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="card-deck">
+        {% for form in forms %}
+            <div class="card">
+                <a href="{{ path('admin_show_form', { alias: form.alias }) }}" class="card-body">
+                    <h5 class="card-title">{{ form.name }}</h5>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends '@Common/main.html.twig' %}
+
+{% block menu %}
+    {{ knp_menu_render(mainMenu, {'currentClass': 'active' }) }}
+
+    {% set systemMenu = knp_menu_get('systemMenu') %}
+    {% if systemMenu.getChild('system').getChildren()|length > 0 %}
+        {{ knp_menu_render('systemMenu', {'currentClass': 'active' }) }}
+    {% endif %}
+    {{ knp_menu_render('servicesMenu', {'currentClass': 'active' }) }}
+    {{ knp_menu_render('userMenu', {'currentClass': 'active' }) }}
+{% endblock %}
+
+{% block submenu %}
+    {{ knp_menu_render(mainMenu, {'currentClass': 'active', 'template': '@Common/submenu.html.twig' }) }}
+
+    {{ knp_menu_render('systemMenu', {'currentClass': 'active', 'template': '@Common/submenu.html.twig' }) }}
+    {{ knp_menu_render('servicesMenu', {'currentClass': 'active', 'template': '@Common/submenu.html.twig' }) }}
+    {{ knp_menu_render('userMenu', {'currentClass': 'active', 'template': '@Common/submenu.html.twig' }) }}
+{% endblock %}
+
+
+{% block container %}
+    <div class="d-none d-md-block">
+        {% block breadcrumb %}{% endblock %}
+    </div>
+
+    {% for msg in app.session.flashbag.get('error') %}
+        <div class="bs-callout bs-callout-danger">
+            <h4>{{ 'error.label'|trans }}</h4>
+            <p>{{ msg|trans }}</p>
+        </div>
+    {% endfor %}
+
+    {% for msg in app.session.flashbag.get('info') %}
+        <div class="bs-callout bs-callout-info">
+            <h4>{{ 'info.label'|trans }}</h4>
+            <p>{{ msg|trans }}</p>
+        </div>
+    {% endfor %}
+
+    {% for msg in app.session.flashbag.get('success') %}
+        <div class="bs-callout bs-callout-success">
+            <h4>{{ 'success.label'|trans }}</h4>
+            <p>{{ msg|trans }}</p>
+        </div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+
+    <div class="d-show d-md-none mt-3">
+        {{ block('breadcrumb') }}
+    </div>
+{% endblock %}

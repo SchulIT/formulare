@@ -1,0 +1,33 @@
+{% extends "@Common/simple/main.html.twig" %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{{ preload(asset('build/frontend.css')) }}">
+{% endblock %}
+
+{% block title %}{{ formOptions.name }}{% endblock %}
+
+{% block content %}
+    {% for p in formOptions.introductionParagraphs %}
+        <p>{{ p }}</p>
+    {% endfor %}
+
+    {{ form_start(form) }}
+
+    {% for child in form %}
+        {{ form_row(child) }}
+    {% endfor %}
+
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-primary btn-block" type="submit">{{ 'form.submit'|trans }}</button>
+            </div>
+
+            <div class="col-md-6">
+                <button class="btn btn-secondary btn-block" type="reset">{{ 'form.reset'|trans }}</button>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

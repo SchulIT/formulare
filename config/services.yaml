@@ -1,0 +1,59 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Registry,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    LightSaml\SpBundle\Security\User\UsernameMapperInterface:
+        alias: lightsaml_sp.username_mapper.simple
+
+    SchulIT\CommonBundle\Command\CreateCertificateCommand:
+        arguments:
+            $types:
+                saml:
+                    keyFile: '%sp_cert_key%'
+                    certFile: '%sp_cert_file%'
+                oauth2:
+                    keyFile: '%kernel.project_dir%/oauth/oauth.key'
+                    certFile: '%kernel.project_dir%/oauth/oauth.pub'
+
+    SchulIT\CommonBundle\EventSubscriber\SamlExceptionSubscriber:
+        arguments:
+            $retryRoute: 'lightsaml_sp.login'
+            $loggedInRoute: 'dashboard'
+
+    # DARK MODE:
+    SchulIT\CommonBundle\DarkMode\DarkModeManagerInterface:
+        class: App\DarkMode\DarkModeManager
+
+    # MENU
+    App\Menu\Builder:
+        arguments:
+            $idpProfileUrl: '%env(IDP_PROFILE_URL)%'
+        tags:
+            - { name: knp_menu.menu_builder, method: mainMenu, alias: mainMenu }
+            - { name: knp_menu.menu_builder, method: userMenu, alias: userMenu }
+            - { name: knp_menu.menu_builder, method: servicesMenu, alias: servicesMenu }
+            - { name: knp_menu.menu_builder, method: systemMenu, alias: systemMenu }

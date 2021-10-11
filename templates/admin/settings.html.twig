@@ -1,0 +1,35 @@
+{% extends "main.html.twig" %}
+
+{% block title %}{{ 'admin.settings.label'|trans }}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.label'|trans }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ path('admin_show_form', { alias: form.alias }) }}">{{ form.name }}</a></li>
+        <li class="breadcrumb-item">{{ block('title') }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    {{ form_start(settingsForm) }}
+
+    <div class="card">
+        <div class="card-header">{{ 'label.general'|trans }}</div>
+
+        <div class="card-body">
+            {{ form_widget(settingsForm) }}
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button type="submit" class="btn btn-primary btn-sm">
+            <i class="fa fa-save"></i> {{ 'actions.save'|trans }}
+        </button>
+
+        <a href="{{ path('admin_show_form', { alias: form.alias })}}" class="btn btn-secondary btn-sm">
+            <i class="fa fa-arrow-left"></i> {{ 'actions.back'|trans }}
+        </a>
+    </div>
+
+    {{ form_end(settingsForm) }}
+{% endblock %}

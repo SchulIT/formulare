@@ -1,0 +1,30 @@
+{% extends "@Common/auth/main.html.twig" %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{{ preload(asset('build/frontend.css')) }}">
+{% endblock %}
+
+{% block title %}{{ formOptions.name }}{% endblock %}
+
+{% block content %}
+
+    <div class="text-center">
+        <i class="fas fa-check fa-3x d-block text-secondary"></i>
+        <h4>{{ 'form.success.label'|trans }}</h4>
+    </div>
+
+    <hr>
+
+    {% for p in formOptions.successParagraphs %}
+        <p>{{ p }}</p>
+    {% endfor %}
+
+    <hr>
+
+    <p class="mb-0"><i class="fas fa-info-circle"></i> {{ 'form.success.footer'|trans }}</p>
+
+    <hr>
+
+    <a href="{{ path('show_form', { formAlias: formOptions.alias }) }}" class="btn btn-block btn-primary">{{ 'form.success.redo'|trans }}</a>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: auto
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        backend_users:
+            entity:
+                class: App\Entity\User
+                property: idpId
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        login:
+            anonymous: ~
+            pattern: ^/admin/saml/(login|discovery)$
+
+        logout:
+            anonymous: ~
+            pattern: ^/admin/logout/success
+
+        auth:
+            anonymous: ~
+            pattern: ^/admin/auth
+
+        backend:
+            pattern: ^/admin
+            provider: backend_users
+            light_saml_sp:
+                provider: backend_users
+                user_creator: App\Security\User\UserCreator
+                login_path: /admin/saml/login
+                check_path: /admin/saml/login_check
+                attribute_mapper: App\Security\User\AttributeMapper
+                token_factory: SchulIT\CommonBundle\Security\Factory\SamlSpTokenFactory
+                failure_path: /auth/error
+            logout:
+                path: /admin/logout
+                target: /admin/logout/success
+
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/admin/saml/(login|discovery)$, roles: IS_ANONYMOUS }
+        - { path: ^/admin, roles: ROLE_ADMIN }

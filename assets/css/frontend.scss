@@ -1,0 +1,72 @@
+$enable-shadows: true;
+$enable-gradients: true;
+
+@import '../../vendor/schulit/common-bundle/Resources/assets/css/simple.scss';
+
+form {
+  label {
+    &.required {
+      &::after {
+        content: '*';
+        color: $danger;
+      }
+    }
+  }
+
+  small.form-text {
+    font-size: 100% !important;
+  }
+
+  .invalid-feedback {
+    font-size: 100%;
+  }
+
+  /* Fix column widths for better readability */
+  .col-sm-2 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+
+  .col-sm-10 {
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+
+  .card-radio {
+    @extend .d-none;
+
+    &:disabled+.card {
+      cursor: not-allowed;
+    }
+
+    &+.card {
+      cursor: pointer;
+
+      .indicator {
+        position: absolute;
+        top: 1.25rem;
+        right: 1.25rem;
+      }
+
+      .fa-circle {
+        display: inline;
+      }
+
+      .fa-check-circle {
+        display: none;
+      }
+    }
+
+    &:checked+.card {
+      .fa-circle {
+        display: none;
+      }
+
+      .fa-check-circle {
+        display: inline;
+      }
+
+      border-color: $primary;
+    }
+  }
+}

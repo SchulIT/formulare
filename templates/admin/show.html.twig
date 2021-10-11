@@ -1,0 +1,146 @@
+{% extends "main.html.twig" %}
+
+{% block title %}{{ form.name }}{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ path('dashboard') }}">{{ 'dashboard.label'|trans }}</a></li>
+        <li class="breadcrumb-item">{{ block('title') }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-md-9">
+                {% if settings.formMaxSubmissions(form) > 0 and settings.formMaxSubmissions(form) == count %}
+                    <div class="bs-callout bs-callout-info">
+                        <h4>{{ 'admin.maximum.label'|trans }}</h4>
+                        <p>{{ 'admin.maximum.text'|trans }}</p>
+                    </div>
+                {% endif %}
+
+                <div class="card">
+                    <div class="card-header">
+                        {{ form.name }}
+                        <span class="badge badge-primary">
+                            {{ count }}
+                            {% if settings.formMaxSubmissions(form) > 0 %}/ {{ settings.formMaxSubmissions(form) }}{% endif %}
+                        </span>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover card-table">
+                            <thead>
+                            <tr>
+                                {% for item in form.items %}
+                                    {% if item.label is defined %}
+                                        <th>{{ item.label }}</th>
+                                    {% endif %}
+                                {% endfor %}
+                                <th>{{ 'label.timestamp'|trans }}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            {% for submission in submissions %}
+                                <tr>
+                                {% for key, item in form.items %}
+                                    {% if item.label is defined and submission.data[key] is defined %}
+                                        <td>
+                                            {{ attribute(submission.data, key) }}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                                <td>{{ submission.date|format_datetime }}</td>
+                                <td>
+                                    <a href="{{ path('admin_remove_record', { alias: form.alias, id: submission.id}) }}" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- pagination -->
+                {% include '@Common/includes/pagination.html.twig' with {
+                    currentFilters: { alias: form.alias },
+                    currentPage: page,
+                    paginationPath: 'admin_show_form',
+                    lastPage: pages,
+                    showAlwaysFirstAndLast: true
+                } only %}
+            </div>
+
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="list-group list-group-flush">
+                        <a href="{{ path('admin_form_settings', { alias: form.alias }) }}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-cogs"></i> {{ 'admin.settings.label'|trans }}
+                        </a>
+                        <a href="{{ path('admin_export_form', { alias: form.alias }) }}" class="list-group-item list-group-item-action">
+                            <i class="fas fa-download"></i> {{ 'admin.export.label'|trans }}
+                        </a>
+                        <a href="{{ path('admin_truncate_form', { alias: form.alias }) }}" class="list-group-item list-group-item-action list-group-item-danger">
+                            <i class="fas fa-trash"></i> {{ 'admin.truncate.label'|trans }}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body flush-last-p">
+                        <h5 class="card-title">
+                            <i class="fas fa-info-circle"></i> {{ 'info.label'|trans }}
+                        </h5>
+
+                        <p>
+                            <i class="fas fa-anchor" title="{{ 'admin.info.link'|trans }}"></i> <a href="{{ path('show_form', { formAlias: form.alias }) }}" target="_blank">
+                                {{ url('show_form', { formAlias: form.alias }) }}
+                            </a>
+                        </p>
+
+                        {% if settings.formStartDate(form) is not null %}
+                            <p>
+                                <i class="fas fa-play" title="{{ 'admin.info.start'|trans }}"></i> {{ settings.formStartDate(form)|format_datetime }}
+                            </p>
+                        {% endif %}
+
+                        {% if settings.formEndDate(form) is not null %}
+                            <p>
+                                <i class="fas fa-stop" title="{{ 'admin.info.expiry'|trans }}"></i> {{ settings.formEndDate(form)|format_datetime }}
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% for key, seatItem in form.seats %}
+                    {% set info = seatsResolver.resolveSeats(form, key) %}
+                    <div class="card">
+                        <div class="card-header">
+                            {{ seatItem.label }}
+                        </div>
+
+                        <table class="table table-bordered table-hover table-striped card-table">
+                            <colgroup>
+                                <col>
+                                <col class="column-100">
+                            </colgroup>
+                            <tbody>
+                            {% for seatKey, _ in seatItem.seats %}
+                                <tr>
+                                    <td>{{ form.items[key].choices[seatKey] }}</td>
+                                    <td>{{ info.available(seatKey) }} / {{ info.total(seatKey) }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

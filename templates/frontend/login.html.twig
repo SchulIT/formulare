@@ -1,0 +1,37 @@
+{% extends "@Common/auth/main.html.twig" %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{{ preload(asset('build/frontend.css')) }}">
+{% endblock %}
+
+{% block title %}{{ formOptions.name }}{% endblock %}
+
+{% block content %}
+
+    <div class="text-center">
+        <i class="fas fa-key fa-3x d-block text-secondary"></i>
+        <h4>{{ 'form.authentication.label'|trans }}</h4>
+        <p>{{ 'form.authentication.info'|trans }}</p>
+    </div>
+
+    <hr>
+
+    <form class="form-signin" role="form" method="post" action="{{ path('check_authenticate_form', { formAlias: formAlias }) }}">
+        <input type="hidden" name="_username" value="{{ username }}">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <div class="form-group">
+            <label class="control-label" for="password">{{ 'form.authentication.password'|trans }}</label>
+            <input type="password" id="password" name="_password" class="form-control">
+        </div>
+
+        <div class="container-fluid px-0">
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-primary btn-block" type="submit">{{ 'form.authentication.proceed'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

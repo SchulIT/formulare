@@ -1,0 +1,36 @@
+{% extends "@Common/form.html.twig" %}
+
+{% block seats_widget %}
+    <div class="d-flex flex-wrap align-content-around flex-row mx-n2">
+    {% for choice in form.vars.choices %}
+        {% set available = form.vars.seats_info.available(choice.value) %}
+        <label class="flex-fill mx-2 mb-2">
+            <input type="radio" name="{{ form.vars.full_name }}" value="{{ choice.value }}" {% if choice.value == form.vars.value %}checked{% endif %} class="card-radio" {% if available == 0 %}disabled{% endif %}>
+            <div class="card">
+                <div class="card-body">
+                    {% if available > 0 %}
+                    <div class="indicator">
+                        <i class="far fa-circle fa-lg"></i>
+                        <i class="fas fa-check-circle fa-lg"></i>
+                    </div>
+                    {% endif %}
+
+                    <p class="font-weight-bolder">
+                        {{ choice.label }}
+                    </p>
+
+                    <span class="text-muted">
+                        {{ 'form.seats'|trans({'%count%': available }) }}
+                    </span>
+                </div>
+            </div>
+        </label>
+    {% endfor %}
+    </div>
+{% endblock %}
+
+{% block paragraph_row %}
+    {% for paragraph in form.vars['paragraphs'] %}
+        <p>{{ paragraph }}</p>
+    {% endfor %}
+{% endblock %}

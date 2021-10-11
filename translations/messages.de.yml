@@ -1,0 +1,80 @@
+form:
+  authentication:
+    label: Anmelden
+    info: Das Formular wurde mit einem Passwort geschützt.
+    proceed: weiter
+    username: Benutzername
+    password: Passwort
+
+  success:
+    label: Daten abgeschickt
+    footer: Dieses Fenster oder dieser Tab kann nun geschlossen werden.
+    redo: Formular erneut ausfüllen
+
+  seats: "{0} Keine Plätze mehr frei|{1} Noch 1 Platz frei|]1,Inf[ Noch %count% Plätze frei"
+
+  too_early:
+    title: Formular noch nicht freigeschaltet
+    message: 'Das Formular kann erst ab <strong>%date%</strong> ausgefüllt werden.'
+    footer: Bitte kommen Sie zu einem späteren Zeitpunkt wieder zu diesem Formular zurück.
+
+  maximum_reached:
+    title: Formular geschlossen
+    message: Die Höchstzahl an Einsendungen wurde erreicht, sodass das Formular geschlossen wurde.
+
+  too_late:
+    title: Formular abgelaufen
+    message: 'Das Formular kann nicht mehr ausgefüllt werden.'
+
+  submit: Abschicken
+  reset: Zurücksetzen
+
+label:
+  timestamp: Zeitstempel
+  general: Allgemeine Informationen
+
+admin:
+  export:
+    label: Daten exportieren
+  truncate:
+    label: Daten löschen
+    confirm: Sollen wirklich alle Daten des Formulars %name% gelöscht werden? Eine Wiederherstellung ist nicht möglich.
+    success: Alle Daten gelöscht.
+  remove:
+    label: Datensatz löschen
+    confirm: Soll der Datensatz mit der ID %id% wirklich gelöscht werden? Eine Wiederherstellung ist nicht möglich.
+    success: Datensatz gelöscht.
+  settings:
+    label: Einstellungen
+    success: Einstellungen erfolgreich aktualisiert
+    start:
+      label: Start
+      help: Gibt an, ab welchem Zeitpunkt das Formular freigeschaltet ist. Erst nach diesem Zeitpunkt ist das Ausfüllen möglich.
+    end:
+      label: Ende
+      help: Gibt an, ab welchem Zeitpunkt das Formular nicht mehr freigeschaltet ist. Ausfüllen ist nur vor diesem Zeitpunkt möglich.
+    max:
+      label: Maximale Anzahl Einsendungen
+      help: Gibt an, wie viele Formulareinsendungen akzeptiert werden. Diese Option kann genutzt werden, um Formulare mit einer Höchstzahl an Anmeldungen zu realisieren. Sobald die Höchstzahl erreicht ist, ist das Ausfüllen nicht mehr möglich. Der Wert 0 bedeutet, dass die Anzahl nicht beschränkt ist.
+
+  maximum:
+    label: Formular geschlossen
+    text: Da die Höchstzahl an Einsendungen erreich ist, wurde das Formular geschlossen. Das Formular kann wieder geöffnet werden, indem entweder Datensätze gelöscht werden oder die Höchstzahl in den Einstellungen erhöht wird.
+
+  info:
+    link: Link
+    start: Beginn
+    expiry: Ablauf
+    maximum: Maximale Anzahl an Einsendungen
+
+actions:
+  confirm: bestätigen
+  cancel: abbrechen
+  back: zurück
+  save: speichern
+
+truncate:
+  header: Leeren bestätigen
+
+remove:
+  header: Löschen bestätigen
