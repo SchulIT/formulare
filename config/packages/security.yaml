@@ -15,6 +15,10 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        dependencies:
+            pattern: ^/dependencies
+            anonymous: ~
+
         login:
             anonymous: ~
             pattern: ^/admin/saml/(login|discovery)$
