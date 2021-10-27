@@ -44,6 +44,10 @@ services:
             $retryRoute: 'lightsaml_sp.login'
             $loggedInRoute: 'dashboard'
 
+    App\Controller\DefaultController:
+        bind:
+            $redirectUrl: '%env(REDIRECT_URL)%'
+
     # DARK MODE:
     SchulIT\CommonBundle\DarkMode\DarkModeManagerInterface:
         class: App\DarkMode\DarkModeManager
