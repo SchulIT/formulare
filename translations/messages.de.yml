@@ -32,6 +32,7 @@ form:
 label:
   timestamp: Zeitstempel
   general: Allgemeine Informationen
+  number: 'Anzahl %label%'
 
 admin:
   export:
@@ -72,6 +73,7 @@ actions:
   cancel: abbrechen
   back: zurück
   save: speichern
+  add: hinzufügen
 
 truncate:
   header: Leeren bestätigen

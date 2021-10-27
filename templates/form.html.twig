@@ -34,3 +34,35 @@
         <p>{{ paragraph }}</p>
     {% endfor %}
 {% endblock %}
+
+{%- block collection_row -%}
+    <div class="form-group row{% if (not compound or force_error|default(false)) and not valid %} is-invalid{% endif %}">
+        {{- form_label(form) -}}
+        <div class="{{ block('form_group_class') }}">
+            <div data-collection="collection-{{ form.vars.id }}" data-prototype="{{ form_widget(form.vars.prototype)|e('html_attr') }}">
+                {% for child in form %}
+                    {{ form_widget(child) }}
+                {% endfor %}
+            </div>
+
+            <button type="button" class="btn btn-outline-primary btn-sm btn-add" data-collection="collection-{{ form.vars.id }}">
+                <i class="fas fa-plus"></i> {{ 'actions.add'|trans }}
+            </button>
+
+            {{- form_errors(form) -}}
+            {{- form_help(form) -}}
+        </div>
+    </div>
+{%- endblock -%}
+
+{%- block collection_entry_widget -%}
+    <div class="d-flex mb-2 collection-entry">
+        <div class="flex-fill">
+            {{ form_widget(form) }}
+        </div>
+
+        <button type="button" class="btn btn-danger ml-2 btn-delete" data-selector=".collection-entry">
+            <i class="fas fa-trash"></i>
+        </button>
+    </div>
+{%- endblock -%}

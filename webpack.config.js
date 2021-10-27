@@ -25,6 +25,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('frontend', './assets/js/frontend.js')
+    .addEntry('collection', './assets/js/collection.js')
     .addEntry('backend', './assets/js/backend.js')
     .addStyleEntry('simple', './vendor/schulit/common-bundle/Resources/assets/css/simple.scss')
 

@@ -43,6 +43,10 @@ class CsvExport {
         $header = [ ];
         foreach($form->getItems() as $item) {
             $header[] = $item['label'];
+
+            if(isset($item['add'])) {
+                $header[] = $this->translator->trans('label.number', ['%label%' => $item['label']]);
+            }
         }
 
         $header[] = $this->translator->trans('label.timestamp');
@@ -52,7 +56,13 @@ class CsvExport {
             $row = [];
 
             foreach($form->getItems() as $key => $item) {
-                $row[] = $this->propertyAccessor->getValue($submission->getData(), '[' . $key . ']');
+                if(isset($item['add'])) {
+                    $collection = $this->propertyAccessor->getValue($submission->getData(), '[' . $key . ']');
+                    $row[] = implode(', ', $collection);
+                    $row[] = count($collection);
+                } else {
+                    $row[] = $this->propertyAccessor->getValue($submission->getData(), '[' . $key . ']');
+                }
             }
 
             $row[] = $submission->getDate()->format('Y-m-d H:i:s');

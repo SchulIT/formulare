@@ -6,6 +6,11 @@
 
 {% block title %}{{ formOptions.name }}{% endblock %}
 
+{% block javascript %}
+    {{ parent() }}
+    <script src="{{ asset('build/collection.js') }}"></script>
+{% endblock %}
+
 {% block content %}
     {% for p in formOptions.introductionParagraphs %}
         <p>{{ p }}</p>

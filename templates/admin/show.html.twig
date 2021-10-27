@@ -49,7 +49,11 @@
                                 {% for key, item in form.items %}
                                     {% if item.label is defined and submission.data[key] is defined %}
                                         <td>
-                                            {{ attribute(submission.data, key) }}
+                                            {% if item.add is defined %}
+                                                {{ attribute(submission.data, key)|join(', ') }}
+                                            {% else %}
+                                                {{ attribute(submission.data, key) }}
+                                            {% endif %}
                                         </td>
                                     {% endif %}
                                 {% endfor %}
