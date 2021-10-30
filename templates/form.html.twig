@@ -66,3 +66,15 @@
         </button>
     </div>
 {%- endblock -%}
+
+{% block checkbox_label %}
+    {{ parent() }}
+    <i class="fas fa-asterisk text-danger"></i>
+{% endblock %}
+
+{%- block checkbox_row -%}
+    <div{% with {attr: row_attr|merge({class: (row_attr.class|default('') ~ ' form-group')|trim})} %}{{ block('attributes') }}{% endwith %}>{#--#}
+        {{- form_widget(form) -}}
+        {{- form_help(form) -}}
+    </div>
+{%- endblock checkbox_row %}

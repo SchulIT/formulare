@@ -4,12 +4,15 @@ $enable-gradients: true;
 @import '../../vendor/schulit/common-bundle/Resources/assets/css/simple.scss';
 
 form {
-  label {
-    &.required {
-      &::after {
-        content: '*';
-        color: $danger;
-      }
+  legend.col-form-label.required,
+  label.col-form-label.required {
+    &::after {
+      color: $danger;
+    }
+  }
+  label.checkbox-custom.required {
+    &::after {
+      content: '';
     }
   }
 

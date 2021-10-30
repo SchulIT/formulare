@@ -6,4 +6,3 @@ twig:
 
     form_themes:
         - "form.html.twig"
-        - "@Common/form.html.twig"
