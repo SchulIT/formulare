@@ -21,10 +21,10 @@
         "bootstrap.native-loader": "^2.0.0",
         "bootstrap4-card-tables": "^1.2.1",
         "core-js": "^3.1.4",
-        "node-sass": "^4.13.1",
+        "node-sass": "^6.0.0",
         "node-sass-glob-importer": "^5.3.2",
         "postcss-loader": "^4.0",
-        "sass-loader": "^9.0",
+        "sass-loader": "^10.0",
         "uglify-js": "^3.8.1"
     },
     "browserslist": [
