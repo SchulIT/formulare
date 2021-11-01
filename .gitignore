@@ -311,3 +311,4 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/symfony,intellij+all,visualstudiocode,node,yarn
 
 public/build/*
+!.env
