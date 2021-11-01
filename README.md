@@ -65,6 +65,9 @@ form:
         seats:                # Optional (seats wird an vielen Stellen vom System automatisch erkannt)
           one: 10             # Für die erste Wahl gibt es maximal 10 Plätze
           two: 5
+      zustimmung:
+        label: Ich stimme zu
+        checkbox: ~           # So wird sichergestellt, dass die Werte 0 und 1 als X oder als Häckchen dargestellt werden
 
     # Optional, falls eine Anmeldung erforderlich ist, um das Formular abzuschicken. Wenn keine Anmeldung erforderlich ist,
     # kann der Abschnitt weggelassen werden.
@@ -113,7 +116,7 @@ zur Verfügung.
 
 namespace App\Form;
 
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;use Symfony\Component\Validator\Constraints\Choice;use Symfony\Component\Validator\Constraints\NotBlank;use Symfony\Component\Validator\Constraints\NotNull;
 
 class FormType extends AbstractFormType {
@@ -138,6 +141,9 @@ class FormType extends AbstractFormType {
                     new Choice(array_keys($options['items']['auswahl']['choice']))
                 ]
             ])
+            ->add('zustimmung', CheckboxType::class, [
+                'label' => $options['items']['zustimmung']['label']
+            ]);
     }
 }
 ```
