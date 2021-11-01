@@ -21,7 +21,7 @@ security:
 
         login:
             anonymous: ~
-            pattern: ^/admin/saml/(login|discovery)$
+            pattern: ^/admin/saml/(login|discovery|metadata.xml)$
 
         logout:
             anonymous: ~
