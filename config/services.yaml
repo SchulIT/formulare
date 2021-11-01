@@ -26,6 +26,11 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    # SESSIONS
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+        arguments:
+            $pdoOrDsn: '%env(DATABASE_URL)%'
+
     LightSaml\SpBundle\Security\User\UsernameMapperInterface:
         alias: lightsaml_sp.username_mapper.simple
 
