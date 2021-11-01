@@ -13,3 +13,7 @@ composer:
 
 logout:
   path: /admin/logout
+
+logout_success:
+  path: /admin/logout/success
+  defaults: { _controller: SchulIT\CommonBundle\Controller\LogoutController::logout }

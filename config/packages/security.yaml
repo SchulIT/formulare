@@ -51,4 +51,5 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin/saml/(login|discovery|metadata.xml)$, roles: IS_ANONYMOUS }
+        - { path: ^/admin/logout/success$, roles: IS_ANONYMOUS }
         - { path: ^/admin, roles: ROLE_ADMIN }
