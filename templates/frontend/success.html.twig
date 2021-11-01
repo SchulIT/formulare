@@ -28,3 +28,8 @@
     <a href="{{ path('show_form', { formAlias: formOptions.alias }) }}" class="btn btn-block btn-primary">{{ 'form.success.redo'|trans }}</a>
 
 {% endblock %}
+
+{% block footer_links %}
+    – <a href="{{ privacy_url }}" target="_blank">{{ 'privacy.label'|trans }}</a>
+    – <a href="{{ imprint_url }}" target="_blank">{{ 'imprint.label'|trans }}</a>
+{% endblock %}

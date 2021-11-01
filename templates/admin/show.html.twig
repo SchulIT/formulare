@@ -47,12 +47,24 @@
                             {% for submission in submissions %}
                                 <tr>
                                 {% for key, item in form.items %}
-                                    {% if item.label is defined and submission.data[key] is defined %}
+                                    {% if item.label is defined %}
                                         <td>
-                                            {% if item.add is defined %}
-                                                {{ attribute(submission.data, key)|join(', ') }}
+                                            {% if submission.data[key] is defined %}
+                                                {% if item.add is defined %}
+                                                    {{ attribute(submission.data, key)|join(', ') }}
+                                                {% elseif item.checkbox is defined %}
+                                                    {% set value = attribute(submission.data, key) %}
+
+                                                    {% if value == true %}
+                                                        <i class="fas fa-check"></i>
+                                                    {% else %}
+                                                        <i class="fas fa-times"></i>
+                                                    {% endif %}
+                                                {% else %}
+                                                    {{ attribute(submission.data, key) }}
+                                                {% endif %}
                                             {% else %}
-                                                {{ attribute(submission.data, key) }}
+                                                <span class="badge badge-primary">{{ 'label.not_available'|trans }}</span>
                                             {% endif %}
                                         </td>
                                     {% endif %}

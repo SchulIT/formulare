@@ -4,5 +4,9 @@ twig:
     strict_variables: '%kernel.debug%'
     exception_controller: null
 
+    globals:
+        privacy_url: "%env(PRIVACY_URL)%"
+        imprint_url: "%env(IMPRINT_URL)%"
+
     form_themes:
         - "form.html.twig"

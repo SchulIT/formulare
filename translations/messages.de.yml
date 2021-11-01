@@ -33,6 +33,7 @@ label:
   timestamp: Zeitstempel
   general: Allgemeine Informationen
   number: 'Anzahl %label%'
+  not_available: N/A
 
 admin:
   export:
@@ -80,3 +81,9 @@ truncate:
 
 remove:
   header: Löschen bestätigen
+
+privacy:
+  label: Datenschutz
+
+imprint:
+  label: Impressum

@@ -17,3 +17,8 @@
 
     <p class="mb-0">{{ 'form.too_late.message'|trans({ '%date%': start|format_datetime })|raw }}</p>
 {% endblock %}
+
+{% block footer_links %}
+    – <a href="{{ privacy_url }}" target="_blank">{{ 'privacy.label'|trans }}</a>
+    – <a href="{{ imprint_url }}" target="_blank">{{ 'imprint.label'|trans }}</a>
+{% endblock %}
