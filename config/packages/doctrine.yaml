@@ -20,3 +20,4 @@ doctrine:
         dql:
             string_functions:
                 JSON_VALUE: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb\JsonValue
+                JSON_LENGTH: App\Mariadb\JsonLength

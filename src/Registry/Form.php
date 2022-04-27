@@ -116,6 +116,20 @@ class Form {
         return $this;
     }
 
+    public function getCountableProperty(): ?string {
+        foreach($this->items as $key => $item) {
+            if(isset($item['count']) && $item['count'] === true) {
+                return $key;
+            }
+        }
+
+        return null;
+    }
+
+    public function hasCountableProperty(): bool {
+        return $this->getCountableProperty() !== null;
+    }
+
     public function getSeats(): array {
         $result = [ ];
 

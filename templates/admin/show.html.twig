@@ -24,7 +24,7 @@
                     <div class="card-header">
                         {{ form.name }}
                         <span class="badge badge-primary">
-                            {{ count }}
+                            {{ numberOfSubmissions }}
                             {% if settings.formMaxSubmissions(form) > 0 %}/ {{ settings.formMaxSubmissions(form) }}{% endif %}
                         </span>
                     </div>

@@ -10,6 +10,7 @@ use App\Registry\FormRegistry;
 use App\Seats\AvailableSeatsResolver;
 use App\Security\Voter\FormVoter;
 use App\Settings\FormSettings;
+use App\Submission\SubmissionCalculator;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use SchulIT\CommonBundle\Form\ConfirmType;
@@ -55,7 +56,7 @@ class BackendController extends AbstractController {
     /**
      * @Route("/{alias}", name="admin_show_form")
      */
-    public function show($alias, FormSettings $settings, AvailableSeatsResolver $seatsResolver, Request $request) {
+    public function show($alias, FormSettings $settings, AvailableSeatsResolver $seatsResolver, SubmissionCalculator $submissionCalculator, Request $request) {
         $form = $this->getFormOrThrowNotFound($alias);
         $this->denyAccessUnlessGranted(FormVoter::Manage, $form);
 
@@ -81,6 +82,7 @@ class BackendController extends AbstractController {
             'pages' => $pages,
             'count' => $count,
             'settings' => $settings,
+            'numberOfSubmissions' => $submissionCalculator->calculateFormSubmissions($form),
             'seatsResolver' => $seatsResolver
         ]);
     }

@@ -7,6 +7,7 @@ use App\Registry\Form;
 use App\Registry\FormRegistry;
 use App\Seats\AvailableSeatsResolver;
 use App\Settings\FormSettings;
+use App\Submission\SubmissionCalculator;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use stdClass;
@@ -81,7 +82,8 @@ class FrontendController extends AbstractController {
      * @Route("", name="show_form")
      */
     public function form(string $formAlias, Request $request, EntityManagerInterface $manager,
-                         AvailableSeatsResolver $seatsResolver, FormSettings $settings, PropertyAccessorInterface $propertyAccessor) {
+                         AvailableSeatsResolver $seatsResolver, FormSettings $settings,
+                         SubmissionCalculator $submissionCalculator, PropertyAccessorInterface $propertyAccessor) {
         $formModel = $this->getFormOrThrowNotFound($formAlias);
         $now = new DateTime('now');
 
@@ -99,14 +101,7 @@ class FrontendController extends AbstractController {
         }
 
         if(($max = $settings->getFormMaxSubmissions($formModel)) !== null) {
-            $count = (int)$manager
-                ->createQueryBuilder()
-                ->select('COUNT(1)')
-                ->from(Submission::class, 's')
-                ->where('s.form = :alias')
-                ->setParameter('alias', $formModel->getAlias())
-                ->getQuery()
-                ->getSingleScalarResult();
+            $count = $submissionCalculator->calculateFormSubmissions($formModel);
 
             if($count >= $max) {
                 return $this->render('frontend/maximum_reached.html.twig', [
