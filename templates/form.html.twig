@@ -69,7 +69,9 @@
 
 {% block checkbox_label %}
     {{ parent() }}
+    {% if required %}
     <i class="fas fa-asterisk text-danger"></i>
+    {% endif %}
 {% endblock %}
 
 {%- block checkbox_row -%}
