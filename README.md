@@ -4,7 +4,7 @@ Mithilfe dieses Projektes lassen sich (auch komplexe) Formulare erstellen.
 
 ## Voraussetzungen
 
-* PHP 7.4
+* PHP 8.2+
 * MariaDB 10.4+
 
 Da das Tool Formulardaten als JSON in der Datenbank ablegt und die JSON-Funktionen von MariaDB verwendet (welche sich leider zu MySQL unterscheiden),
@@ -14,7 +14,10 @@ muss zwingend MariaDB verwendet werden.
 
 ```bash
 $ git clone https://github.com/SchulIT/formulare.git
-$ composer install --no-dev --optimize-autoloader --no-scripts
+$ composer install --no-dev --classmap-authoritative --no-scripts
+$ npm install
+$ npm run build
+$ php bin/console assets:install
 $ php bin/console app:create-certificate --type saml
 ```
 
@@ -35,6 +38,9 @@ Für ein Formular werden im Wesentlichen drei Dinge benötigt:
 2. eine Formularklasse zur Anzeige und Konfiguration des Formulars, ebenfalls im Ordner `forms/`
 
 ### Konfigurationsdatei
+
+Wichtig: Sobald die Konfigurationsdatei geändert wurde, muss `php bin/console cache:clear` ausgeführt werden, damit die
+Änderungen wirksam werden. Das gilt auch für neue oder gelösche Formulare.
 
 Die Konfigurationsdatei hat folgenden Aufbau:
 
@@ -88,20 +94,20 @@ form:
         # Login und Ende sind Seiten ohne Benutzerkennung
         grundschueler_login:
           pattern: ^/grundschueler/(login|success)$
-          anonymous: ~
+          security: false
     
         grundschueler:
           pattern: ^/grundschueler
-          guard:
-            provider: grundschueler_users
-            authenticators:
-              - App\Security\Frontend\LoginFormAuthenticator
-          logout:
-            path: form_logout
-            success_handler: App\Security\Frontend\LogoutHandler
+          provider: grundschueler_users
+          form_login:
+            login_path: authenticate_form
+            check_path: check_authenticate_form
+            default_target_path: /grundschueler
+            always_use_default_target_path: true
+            enable_csrf: true
     
       access_control:
-        - { path: ^/grundschueler/(login|success), roles: IS_AUTHENTICATED_ANONYMOUSLY  }
+        - { path: ^/grundschueler/(login|success), roles: PUBLIC_ACCESS  }
         - { path: ^/grundschueler, roles: ROLE_GRUNDSCHUELER_USER }
 ```
 
