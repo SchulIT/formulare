@@ -11,10 +11,8 @@ class LogoutHandler implements LogoutSuccessHandlerInterface {
 
     private const SuccessRoute = 'form_success';
 
-    private $urlGenerator;
-
-    public function __construct(UrlGeneratorInterface $urlGenerator) {
-        $this->urlGenerator = $urlGenerator;
+    public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
+    {
     }
 
     /**

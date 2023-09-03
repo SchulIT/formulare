@@ -9,11 +9,13 @@
 {% endblock %}
 
 {% block content %}
-    <div class="card-deck">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 row-cols-xl-6 mb-3 g-4">
         {% for form in forms %}
-            <div class="card">
-                <a href="{{ path('admin_show_form', { alias: form.alias }) }}" class="card-body">
-                    <h5 class="card-title">{{ form.name }}</h5>
+            <div class="col">
+                <a href="{{ path('admin_show_form', { alias: form.alias }) }}" class="card card-link h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ form.name }}</h5>
+                    </div>
                 </a>
             </div>
         {% endfor %}

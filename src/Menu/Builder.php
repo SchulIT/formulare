@@ -8,28 +8,16 @@ use App\Security\Voter\FormVoter;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use LightSaml\SpBundle\Security\Authentication\Token\SamlSpToken;
+use LightSaml\SpBundle\Security\Http\Authenticator\SamlToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Builder {
-    private $factory;
-    private $authorizationChecker;
-    private $translator;
-    private $tokenStorage;
-    private $registry;
 
-    private $idpProfileUrl;
 
-    public function __construct(string $idpProfileUrl, FactoryInterface $factory, AuthorizationCheckerInterface $authorizationChecker,
-                                TranslatorInterface $translator, TokenStorageInterface $tokenStorage, FormRegistry $registry) {
-        $this->idpProfileUrl = $idpProfileUrl;
-        $this->factory = $factory;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->translator = $translator;
-        $this->tokenStorage = $tokenStorage;
-        $this->registry = $registry;
-    }
+    public function __construct(private readonly string $idpProfileUrl, private readonly FactoryInterface $factory, private readonly AuthorizationCheckerInterface $authorizationChecker,
+                                private readonly TranslatorInterface $translator, private readonly TokenStorageInterface $tokenStorage, private readonly FormRegistry $registry) { }
 
     public function userMenu(array $options): ItemInterface {
         $menu = $this->factory->createItem('root')
@@ -107,7 +95,7 @@ class Builder {
 
         $token = $this->tokenStorage->getToken();
 
-        if($token instanceof SamlSpToken) {
+        if($token instanceof SamlToken) {
             $menu = $root->addChild('services', [
                 'label' => ''
             ])
@@ -134,7 +122,7 @@ class Builder {
 
     public function mainMenu(array $options) {
         $menu = $this->factory->createItem('root')
-            ->setChildrenAttribute('class', 'navbar-nav mr-auto');
+            ->setChildrenAttribute('class', 'navbar-nav me-auto');
 
         $menu->addChild('dashboard.label', [
             'route' => 'dashboard'

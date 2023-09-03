@@ -7,12 +7,12 @@ use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 
 class PasswordRequestMatcher implements RequestMatcherInterface {
 
-    public const RouteName = 'authenticate_form';
+    final public const RouteName = 'authenticate_form';
 
     /**
      * @inheritDoc
      */
-    public function matches(Request $request) {
+    public function matches(Request $request): bool {
         return $request->attributes->get('_route') === self::RouteName;
     }
 }

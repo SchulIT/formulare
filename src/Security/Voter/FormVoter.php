@@ -9,15 +9,11 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class FormVoter extends Voter {
 
-    public const Manage = 'manage';
+    final public const Manage = 'manage';
 
-    private $accessDecisionManager;
+    public function __construct(private readonly AccessDecisionManagerInterface $accessDecisionManager) { }
 
-    public function __construct(AccessDecisionManagerInterface $accessDecisionManager) {
-        $this->accessDecisionManager = $accessDecisionManager;
-    }
-
-    protected function supports(string $attribute, $subject) {
+    protected function supports(string $attribute, $subject): bool {
         return $attribute === static::Manage
             && $subject instanceof Form;
     }
@@ -26,9 +22,9 @@ class FormVoter extends Voter {
      * @param string $attribute
      * @param Form $subject
      * @param TokenInterface $token
-     * @return bool|void
+     * @return bool
      */
-    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token) {
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool {
         return $this->accessDecisionManager->decide($token, [ $subject->getAdminRole() ]);
     }
 }

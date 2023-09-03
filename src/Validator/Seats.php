@@ -2,13 +2,12 @@
 
 namespace App\Validator;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[Attribute]
 class Seats extends Constraint {
     public $form = null;
 
-    public $message = 'Invalid option. All seats are taken.';
+    public string $message = 'Invalid option. All seats are taken.';
 }

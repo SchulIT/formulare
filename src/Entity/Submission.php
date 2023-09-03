@@ -6,30 +6,22 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity()
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class Submission {
     use IdTrait;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @var DateTime
-     */
-    private $date;
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTime $date = null;
+
+    #[ORM\Column(type: 'string')]
+    private ?string $form = null;
 
     /**
-     * @ORM\Column(type="string")
-     * @var string
-     */
-    private $form;
-
-    /**
-     * @ORM\Column(type="json")
-     * @Assert\NotNull()
      * @var mixed
      */
+    #[ORM\Column(type: 'json')]
+    #[Assert\NotNull]
     private $data;
 
     /**
@@ -40,7 +32,6 @@ class Submission {
     }
 
     /**
-     * @param string $form
      * @return Submission
      */
     public function setForm(string $form): Submission {
@@ -57,15 +48,13 @@ class Submission {
         return $this;
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
     public function updateDate(): void {
-        $this->date = new \DateTime();
+        $this->date = new DateTime();
     }
 
-    public function getDate(): \DateTime {
+    public function getDate(): DateTime {
         return $this->date;
     }
 }

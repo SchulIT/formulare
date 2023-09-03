@@ -6,23 +6,19 @@ use App\Entity\Setting;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SettingsManager {
-    private $em;
 
-    private $initialized = false;
-    private $settings = [ ];
+    private bool $initialized = false;
+    private array $settings = [ ];
 
-    public function __construct(EntityManagerInterface $em) {
-        $this->em = $em;
-    }
+    public function __construct(private readonly EntityManagerInterface $em) {    }
 
     /**
      * Gets the value of a setting or $default if setting does not exist
      *
-     * @param string $key
-     * @param mixed $default Default value which is returned if the setting with key $key is non-existent
+     * @param mixed|null $default Default value which is returned if the setting with key $key is non-existent
      * @return mixed|null
      */
-    public function getValue($key, $default = null) {
+    public function getValue(string $key, mixed $default = null): mixed {
         $this->initializeIfNecessary();
 
         if(isset($this->settings[$key])) {
@@ -34,11 +30,8 @@ class SettingsManager {
 
     /**
      * Sets the value of a setting
-     *
-     * @param string $key
-     * @param mixed $value
      */
-    public function setValue($key, $value) {
+    public function setValue(string $key, mixed $value): void {
         $this->initializeIfNecessary();
 
         if(!isset($this->settings[$key])) {
@@ -56,7 +49,7 @@ class SettingsManager {
     /**
      * Checks whether to load all settings from the database and loads them if necessary
      */
-    private function initializeIfNecessary() {
+    private function initializeIfNecessary(): void {
         if($this->initialized !== true) {
             $this->initialize();
         }
@@ -65,7 +58,7 @@ class SettingsManager {
     /**
      * Loads all settings from the database
      */
-    protected function initialize() {
+    protected function initialize(): void {
         $settings = $this->em->getRepository(Setting::class)
             ->findAll();
 

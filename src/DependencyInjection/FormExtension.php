@@ -2,18 +2,22 @@
 
 namespace App\DependencyInjection;
 
+use PHPUnit\Util\FileLoader;
+use ReflectionClass;
 use App\Registry\FormRegistry;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class FormExtension extends Extension implements PrependExtensionInterface {
 
     /**
      * @inheritDoc
      */
-    public function load(array $configs, ContainerBuilder $container) {
+    public function load(array $configs, ContainerBuilder $container): void {
         $configuration = new FormConfiguration();
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -26,14 +30,14 @@ class FormExtension extends Extension implements PrependExtensionInterface {
         $container->setDefinition(FormRegistry::class, $definition);
     }
 
-    public function getAlias() {
+    public function getAlias(): string {
         return 'form';
     }
 
     /**
      * @inheritDoc
      */
-    public function prepend(ContainerBuilder $container) {
+    public function prepend(ContainerBuilder $container): void {
         $securityConfig = $container->getExtensionConfig('security')[0];
         $formsConfig = $container->getExtensionConfig('form');
 
@@ -48,7 +52,7 @@ class FormExtension extends Extension implements PrependExtensionInterface {
         }
 
         // Ugly part: replace the config as prepending does not work :-(
-        $reflectionClass = new \ReflectionClass($container);
+        $reflectionClass = new ReflectionClass($container);
         $attribute = $reflectionClass->getProperty('extensionConfigs');
         $attribute->setAccessible(true);
 
@@ -63,7 +67,7 @@ class FormExtension extends Extension implements PrependExtensionInterface {
         $result = $prepend;
 
         // Check if all keys are numeric
-        $allKeys = array_merge(array_keys($original), array_keys($prepend));
+        $allKeys = [...array_keys($original), ...array_keys($prepend)];
         $numericKeys = array_filter($allKeys, 'is_numeric');
         if(count($numericKeys) === count($allKeys)) {
             $result = array_merge($prepend, $original);

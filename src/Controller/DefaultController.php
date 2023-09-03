@@ -8,16 +8,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController {
 
-    private $redirectUrl;
-
-    public function __construct(string $redirectUrl) {
-        $this->redirectUrl = $redirectUrl;
+    public function __construct(private readonly string $redirectUrl)
+    {
     }
 
-    /**
-     * @Route("")
-     * @Route("/")
-     */
+    #[Route(path: '')]
+    #[Route(path: '/')]
     public function index(): RedirectResponse {
         return $this->redirect($this->redirectUrl);
     }

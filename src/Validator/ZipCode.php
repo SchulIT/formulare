@@ -2,11 +2,10 @@
 
 namespace App\Validator;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[Attribute]
 class ZipCode extends Constraint {
-    public $message = '{{ code }} is not a valid ZIP code.';
+    public string $message = '{{ code }} is not a valid ZIP code.';
 }

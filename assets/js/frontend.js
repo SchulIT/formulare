@@ -1,10 +1,10 @@
 require('../css/frontend.scss');
 
-let bsn = require('bootstrap.native');
+import { Tooltip } from "bootstrap";
 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('[title]').forEach(function (el) {
-        new bsn.Tooltip(el, {
+        new Tooltip(el, {
             placement: 'bottom'
         });
     });

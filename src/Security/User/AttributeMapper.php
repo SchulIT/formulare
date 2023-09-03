@@ -2,38 +2,35 @@
 
 namespace App\Security\User;
 
-use LightSaml\SpBundle\Security\Authentication\Token\SamlSpResponseToken;
+use LightSaml\Model\Protocol\Response;
 use LightSaml\SpBundle\Security\User\AttributeMapperInterface;
 use SchulIT\CommonBundle\Saml\ClaimTypes;
+use SchulIT\CommonBundle\Saml\ClaimTypes as SamlClaimTypes;
+use SchulIT\CommonBundle\Security\User\AbstractUserMapper;
 
-class AttributeMapper implements AttributeMapperInterface {
+class AttributeMapper extends AbstractUserMapper implements AttributeMapperInterface {
 
-    public function getAttributes(SamlSpResponseToken $token) {
+    public function getAttributes(Response $response): array {
         return [
-            'name_id' => $token->getResponse()->getFirstAssertion()->getSubject()->getNameID()->getValue(),
-            'services' => $this->getServices($token)
+            'name_id' => $response->getFirstAssertion()->getSubject()->getNameID()->getValue(),
+            'services' => $this->getServices($response)
         ];
     }
 
-    private function getServices(SamlSpResponseToken $token) {
-        $values = $this->getValues($token, ClaimTypes::SERVICES);
+    private function getServices(Response $response): array {
+        $values = $this->getValues($response, SamlClaimTypes::SERVICES);
 
         $services = [ ];
 
         foreach($values as $value) {
-            $services[] = json_decode($value);
+            $services[] = json_decode((string) $value, null, 512, JSON_THROW_ON_ERROR);
         }
 
         return $services;
     }
 
-    private function getValue(SamlSpResponseToken $token, $attributeName) {
-        return $token->getResponse()->getFirstAssertion()->getFirstAttributeStatement()
-            ->getFirstAttributeByName($attributeName)->getFirstAttributeValue();
-    }
-
-    private function getValues(SamlSpResponseToken $token, $attributeName) {
-        return $token->getResponse()->getFirstAssertion()->getFirstAttributeStatement()
+    private function getValues(Response $response, $attributeName) {
+        return $response->getFirstAssertion()->getFirstAttributeStatement()
             ->getFirstAttributeByName($attributeName)->getAllAttributeValues();
     }
 }

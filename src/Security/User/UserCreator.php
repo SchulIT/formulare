@@ -8,21 +8,16 @@ use LightSaml\Model\Protocol\Response;
 use LightSaml\SpBundle\Security\User\UserCreatorInterface;
 use Ramsey\Uuid\Uuid;
 use SchulIT\CommonBundle\Saml\ClaimTypes;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserCreator implements UserCreatorInterface {
 
-    private $em;
-    private $userMapper;
-
-    public function __construct(EntityManagerInterface $em, UserMapper $userMapper) {
-        $this->em = $em;
-        $this->userMapper = $userMapper;
-    }
+    public function __construct(private readonly EntityManagerInterface $em, private readonly UserMapper $userMapper) { }
 
     /**
      * @inheritDoc
      */
-    public function createUser(Response $response) {
+    public function createUser(Response $response): ?UserInterface {
         $id = $response->getFirstAssertion()
             ->getFirstAttributeStatement()
             ->getFirstAttributeByName(ClaimTypes::ID)

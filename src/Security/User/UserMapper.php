@@ -5,6 +5,7 @@ namespace App\Security\User;
 use App\Entity\User;
 use LightSaml\ClaimTypes;
 use LightSaml\Model\Protocol\Response;
+use LogicException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
@@ -12,22 +13,23 @@ use SchulIT\CommonBundle\Saml\ClaimTypes as SamlClaimTypes;
 use SchulIT\CommonBundle\Security\User\AbstractUserMapper;
 
 class UserMapper extends AbstractUserMapper {
-    const ROLES_ASSERTION_NAME = 'urn:roles';
+    final public const ROLES_ASSERTION_NAME = 'urn:roles';
 
     /**
-     * @param User $user
      * @param Response|array[] $data Either a SAMLResponse or an array (keys: SAML Attribute names, values: corresponding values)
      * @return User
      */
-    public function mapUser(User $user, $data) {
+    public function mapUser(User $user, Response|array $data): User {
         if(is_array($data)) {
             return $this->mapUserFromArray($user, $data);
         } else if($data instanceof Response) {
             return $this->mapUserFromResponse($user, $data);
         }
+
+        throw new LogicException('This code should not be executed.');
     }
 
-    private function mapUserFromResponse(User $user, Response $response) {
+    private function mapUserFromResponse(User $user, Response $response): User {
         return $this->mapUserFromArray($user, $this->transformResponseToArray(
             $response,
             [
@@ -47,7 +49,9 @@ class UserMapper extends AbstractUserMapper {
      * @param array<string, mixed> $data
      * @return User
      */
-    private function mapUserFromArray(User $user, array $data) {
+    private function mapUserFromArray(User $user, array $data): User {
+        dump($data);
+
         $username = $data[ClaimTypes::COMMON_NAME];
         $firstname = $data[ClaimTypes::GIVEN_NAME];
         $lastname = $data[ClaimTypes::SURNAME];

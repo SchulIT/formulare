@@ -1,7 +1,7 @@
-@import '../../vendor/schulit/common-bundle/Resources/assets/css/variables.scss';
-
 // Import SCSS from custom
 @import "custom/*.scss";
+
+@import '../../vendor/schulit/common-bundle/Resources/assets/css/variables.scss';
 
 // Import Bootstrap
 @import '~bootstrap/scss/bootstrap';
@@ -15,7 +15,17 @@
 // Import SchulIT design
 @import '../../vendor/schulit/common-bundle/Resources/assets/css/layout.scss';
 @import '../../vendor/schulit/common-bundle/Resources/assets/css/callouts.scss';
-@import '../../vendor/schulit/common-bundle/Resources/assets/css/div-tables.scss';
 
 // Import SCSS from overrides
 @import "overrides/*.scss";
+
+@media screen and (max-width:768px) {
+  header#page-header {
+    padding:10px;
+  }
+}
+
+footer {
+  background: none;
+  border: none;
+}

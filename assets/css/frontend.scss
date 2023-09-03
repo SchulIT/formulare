@@ -1,7 +1,4 @@
-$enable-shadows: true;
-$enable-gradients: true;
-
-@import '../../vendor/schulit/common-bundle/Resources/assets/css/simple.scss';
+@import 'simple.scss';
 
 form {
   legend.col-form-label.required,

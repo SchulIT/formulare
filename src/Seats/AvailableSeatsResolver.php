@@ -7,11 +7,8 @@ use App\Registry\Form;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AvailableSeatsResolver {
-    private $em;
 
-    public function __construct(EntityManagerInterface $em) {
-        $this->em = $em;
-    }
+    public function __construct(private readonly EntityManagerInterface $em) { }
 
     public function resolveSeats(Form $form, string $property): SeatsInformation {
         $choices = array_keys($form->getItems()[$property]['choices']);

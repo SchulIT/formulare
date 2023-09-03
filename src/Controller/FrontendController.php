@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Registry\FormNotFoundException;
+use LogicException;
 use App\Entity\Submission;
 use App\Registry\Form;
 use App\Registry\FormRegistry;
@@ -12,23 +14,24 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-/**
- * @Route("/{formAlias}")
- */
+#[Route(path: '/{formAlias}')]
 class FrontendController extends AbstractController {
 
-    private $registry;
-
-    public function __construct(FormRegistry $registry) {
-        $this->registry = $registry;
+    public function __construct(private readonly FormRegistry $registry)
+    {
     }
 
+    /**
+     * @throws FormNotFoundException
+     */
     private function getFormOrThrowNotFound(string $formAlias): Form {
         if($this->registry->hasForm($formAlias)) {
             return $this->registry->getForm($formAlias);
@@ -37,9 +40,7 @@ class FrontendController extends AbstractController {
         throw new NotFoundHttpException();
     }
 
-    /**
-     * @Route("/login", name="authenticate_form")
-     */
+    #[Route(path: '/login', name: 'authenticate_form')]
     public function password(string $formAlias, AuthenticationUtils $authenticationUtils) {
         $formOptions = $this->getFormOrThrowNotFound($formAlias);
 
@@ -51,26 +52,23 @@ class FrontendController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/login/check", name="check_authenticate_form", methods={"POST"})
-     */
-    public function passwordCheck(string $formAlias) {
-        throw new \LogicException('This code should not be executed.');
+    #[Route(path: '/login/check', name: 'check_authenticate_form', methods: ['POST'])]
+    public function passwordCheck(string $formAlias): never {
+        throw new LogicException('This code should not be executed.');
     }
 
-    /**
-     * @Route("/logout", name="form_logout")
-     */
-    public function logout(string $formAlias) {
+    #[Route(path: '/logout', name: 'form_logout')]
+    public function logout(string $formAlias): RedirectResponse {
         return $this->redirectToRoute('form_success', [
             'formAlias' => $formAlias
         ]);
     }
 
     /**
-     * @Route("/success", name="form_success")
+     * @throws FormNotFoundException
      */
-    public function success(string $formAlias) {
+    #[Route(path: '/success', name: 'form_success')]
+    public function success(string $formAlias): Response {
         $formOptions = $this->getFormOrThrowNotFound($formAlias);
         return $this->render('frontend/success.html.twig', [
             'formOptions' => $formOptions,
@@ -79,11 +77,12 @@ class FrontendController extends AbstractController {
     }
 
     /**
-     * @Route("", name="show_form")
+     * @throws FormNotFoundException
      */
+    #[Route(path: '', name: 'show_form')]
     public function form(string $formAlias, Request $request, EntityManagerInterface $manager,
                          AvailableSeatsResolver $seatsResolver, FormSettings $settings,
-                         SubmissionCalculator $submissionCalculator, PropertyAccessorInterface $propertyAccessor) {
+                         SubmissionCalculator $submissionCalculator, PropertyAccessorInterface $propertyAccessor): RedirectResponse|Response {
         $formModel = $this->getFormOrThrowNotFound($formAlias);
         $now = new DateTime('now');
 

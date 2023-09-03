@@ -1,5 +1,6 @@
 twig:
-    default_path: '%kernel.project_dir%/templates'
+    paths:
+        '%kernel.project_dir%/templates': ~
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     exception_controller: null
@@ -7,6 +8,7 @@ twig:
     globals:
         privacy_url: "%env(PRIVACY_URL)%"
         imprint_url: "%env(IMPRINT_URL)%"
+        profile_url: "%env(IDP_PROFILE_URL)%"
 
     form_themes:
         - "form.html.twig"

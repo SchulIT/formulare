@@ -12,18 +12,12 @@ use Symfony\Component\Validator\Mapping\PropertyMetadata;
 
 class SeatsValidator extends ConstraintValidator {
 
-    private $seatsResolver;
-    private $registry;
-
-    public function __construct(AvailableSeatsResolver $seatsResolver, FormRegistry $registry) {
-        $this->seatsResolver = $seatsResolver;
-        $this->registry = $registry;
-    }
+    public function __construct(private readonly AvailableSeatsResolver $seatsResolver, private readonly FormRegistry $registry) { }
 
     /**
      * @throws Exception
      */
-    public function validate($value, Constraint $constraint) {
+    public function validate($value, Constraint $constraint): void {
         if(!$constraint instanceof Seats) {
             throw new UnexpectedTypeException($constraint, Seats::class);
         }

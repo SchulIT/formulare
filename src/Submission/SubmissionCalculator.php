@@ -7,11 +7,8 @@ use App\Registry\Form;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SubmissionCalculator {
-    private $em;
 
-    public function __construct(EntityManagerInterface $em) {
-        $this->em = $em;
-    }
+    public function __construct(private readonly EntityManagerInterface $em) { }
 
     public function calculateFormSubmissions(Form $form): int {
         $count = (int)$this->em

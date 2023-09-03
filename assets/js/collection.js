@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     function deleteOption() {
-        let selector = this.getAttribute('data-selector') ?? '.form-group';
+        let selector = this.getAttribute('data-selector') ?? '.mb-3';
         this.closest(selector).remove();
     }
 
@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // increase the index with one for the next item
         collectionHolder.setAttribute('data-index', parseInt(index) + 1);
 
+        // Display the form in the page in an li
         let newForm = htmlToElement(newFormHtml);
 
         collectionHolder.appendChild(newForm);

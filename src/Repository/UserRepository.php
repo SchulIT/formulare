@@ -6,11 +6,9 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UserRepository implements UserRepositoryInterface {
-    private $em;
 
-    public function __construct(EntityManagerInterface $em) {
-        $this->em = $em;
-    }
+
+    public function __construct(private readonly EntityManagerInterface $em) { }
 
     public function persist(User $user): void {
         $this->em->persist($user);

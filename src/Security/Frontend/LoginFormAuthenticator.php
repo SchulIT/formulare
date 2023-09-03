@@ -25,16 +25,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     private const LoginRoute = 'authenticate_form';
     private const CheckRoute = 'check_authenticate_form';
     private const FormRoute = 'show_form';
-
-    private $urlGenerator;
-    private $requestStack;
-    private $csrfTokenManager;
     private $passwordEncoder;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, RequestStack $requestStack, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder) {
-        $this->urlGenerator = $urlGenerator;
-        $this->requestStack = $requestStack;
-        $this->csrfTokenManager = $csrfTokenManager;
+    public function __construct(private readonly UrlGeneratorInterface $urlGenerator, private readonly RequestStack $requestStack, private readonly CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder) {
         $this->passwordEncoder = $passwordEncoder;
     }
 
@@ -91,7 +84,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $userProvider->loadUserByUsername($credentials['username']);
+        $user = $userProvider->loadUserByIdentifier($credentials['username']);
 
         if($user === null) {
             throw new UsernameNotFoundException();

@@ -3,20 +3,12 @@
 namespace App\Seats;
 
 class SeatsInformation {
-    /** @var string */
-    private $property;
 
-    /** @var string[] */
-    private $choices = [ ];
+    private array $available = [ ];
 
-    private $available = [ ];
+    private array $total = [ ];
 
-    private $total = [ ];
-
-    public function __construct(string $property, array $choices) {
-        $this->property = $property;
-        $this->choices = $choices;
-    }
+    public function __construct(private readonly string $property, private readonly array $choices) { }
 
     public function getProperty(): string {
         return $this->property;

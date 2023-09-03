@@ -12,17 +12,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SeatsType extends ChoiceType {
 
-    private $registry;
-    private $seatsResolver;
 
-    public function __construct(FormRegistry $registry, AvailableSeatsResolver $seatsResolver, ChoiceListFactoryInterface $choiceListFactory = null, $translator = null) {
+    public function __construct(private readonly FormRegistry $registry, private readonly AvailableSeatsResolver $seatsResolver, ChoiceListFactoryInterface $choiceListFactory = null, $translator = null) {
         parent::__construct($choiceListFactory, $translator);
-
-        $this->registry = $registry;
-        $this->seatsResolver = $seatsResolver;
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver): void {
         parent::configureOptions($resolver);
 
         $resolver
@@ -30,7 +25,7 @@ class SeatsType extends ChoiceType {
             ->setRequired('seats');
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options) {
+    public function buildView(FormView $view, FormInterface $form, array $options): void {
         parent::buildView($view, $form, $options);
 
         $view->vars['seats_info'] = $this->seatsResolver->resolveSeats(
@@ -39,7 +34,7 @@ class SeatsType extends ChoiceType {
         );
     }
 
-    public function getBlockPrefix() {
+    public function getBlockPrefix(): string {
         return 'seats';
     }
 }

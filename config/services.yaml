@@ -3,6 +3,10 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+imports:
+    - { resource: version.yaml }
+    - { resource: '../forms/'}
+
 parameters:
 
 services:
@@ -31,8 +35,12 @@ services:
         arguments:
             $pdoOrDsn: '%env(DATABASE_URL)%'
 
+    # SAML
     LightSaml\SpBundle\Security\User\UsernameMapperInterface:
         alias: lightsaml_sp.username_mapper.simple
+
+    LightSaml\Store\Id\IdStoreInterface:
+        class: SchulIT\CommonBundle\Store\IdStore
 
     SchulIT\CommonBundle\Command\CreateCertificateCommand:
         arguments:

@@ -14,15 +14,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class CsvExport {
     private const Separator = ';';
 
-    private $em;
-    private $translator;
-    private $propertyAccessor;
-
-    public function __construct(EntityManagerInterface $em, TranslatorInterface $translator, PropertyAccessorInterface $propertyAccessor) {
-        $this->em = $em;
-        $this->translator = $translator;
-        $this->propertyAccessor = $propertyAccessor;
-    }
+    public function __construct(private readonly EntityManagerInterface $em, private readonly TranslatorInterface $translator, private readonly PropertyAccessorInterface $propertyAccessor) { }
 
     public function createCsv(Form $form): string {
         /** @var Submission[] $submissions */
@@ -42,6 +34,10 @@ class CsvExport {
 
         $header = [ ];
         foreach($form->getItems() as $item) {
+            if(!isset($item['label'])) {
+                continue;
+            }
+
             $header[] = $item['label'];
 
             if(isset($item['add'])) {
@@ -56,10 +52,14 @@ class CsvExport {
             $row = [];
 
             foreach($form->getItems() as $key => $item) {
+                if(!isset($item['label'])) {
+                    continue;
+                }
+
                 if(isset($item['add'])) {
                     $collection = $this->propertyAccessor->getValue($submission->getData(), '[' . $key . ']');
                     $row[] = implode(', ', $collection);
-                    $row[] = count($collection);
+                    $row[] = is_countable($collection) ? count($collection) : 0;
                 } else {
                     $row[] = $this->propertyAccessor->getValue($submission->getData(), '[' . $key . ']');
                 }

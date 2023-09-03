@@ -2,18 +2,16 @@
 
 namespace App\Registry;
 
-use DateTime;
-
 class FormRegistry {
 
     /** @var Form[] */
-    private $forms;
+    private array $forms;
 
     public function __construct() {
         $this->forms = [ ];
     }
 
-    public function addForm(string $alias, array $options) {
+    public function addForm(string $alias, array $options): void {
         $form = new Form($alias, $options['name'], $options['form_class'], $options['items'], $options['role']);
 
         if($options['introduction']) {
@@ -32,7 +30,6 @@ class FormRegistry {
     }
 
     /**
-     * @param string $alias
      * @return Form
      * @throws FormNotFoundException
      */
@@ -59,9 +56,7 @@ class FormRegistry {
             }
         }
 
-        usort($result, function(Form $formA, Form $formB) {
-            return strnatcmp($formA->getName(), $formB->getName());
-        });
+        usort($result, fn(Form $formA, Form $formB) => strnatcmp($formA->getName(), $formB->getName()));
 
         return $result;
     }
@@ -69,9 +64,7 @@ class FormRegistry {
     public function getForms(): array {
         $result = $this->forms;
 
-        usort($result, function(Form $formA, Form $formB) {
-            return strnatcmp($formA->getName(), $formB->getName());
-        });
+        usort($result, fn(Form $formA, Form $formB) => strnatcmp($formA->getName(), $formB->getName()));
 
         return $result;
     }

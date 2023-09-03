@@ -6,6 +6,7 @@ use App\Entity\Submission;
 use App\Export\CsvExport;
 use App\Form\SettingsType;
 use App\Registry\Form;
+use App\Registry\FormNotFoundException;
 use App\Registry\FormRegistry;
 use App\Seats\AvailableSeatsResolver;
 use App\Security\Voter\FormVoter;
@@ -15,48 +16,38 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use SchulIT\CommonBundle\Form\ConfirmType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/admin")
- */
+#[Route(path: '/admin')]
 class BackendController extends AbstractController {
 
     private const NumberOfItems = 25;
 
-    private $registry;
-    private $em;
-
-    public function __construct(FormRegistry $registry, EntityManagerInterface $em) {
-        $this->registry = $registry;
-        $this->em = $em;
+    public function __construct(private readonly FormRegistry $registry, private readonly EntityManagerInterface $em)
+    {
     }
 
-    /**
-     * @Route("", name="dashboard")
-     */
-    public function index() {
+    #[Route(path: '', name: 'dashboard')]
+    public function index(): Response {
         return $this->render('admin/index.html.twig', [
             'forms' => $this->registry->getFormsForRoles($this->getUser()->getRoles())
         ]);
     }
 
     private function getFormOrThrowNotFound(string $alias): Form {
-        $form = $this->registry->getForm($alias);
-
-        if($form === null) {
+        try {
+            return $this->registry->getForm($alias);
+        } catch (FormNotFoundException) {
             throw new NotFoundHttpException();
         }
-
-        return $form;
     }
 
-    /**
-     * @Route("/{alias}", name="admin_show_form")
-     */
-    public function show($alias, FormSettings $settings, AvailableSeatsResolver $seatsResolver, SubmissionCalculator $submissionCalculator, Request $request) {
+    #[Route(path: '/{alias}', name: 'admin_show_form')]
+    public function show($alias, FormSettings $settings, AvailableSeatsResolver $seatsResolver, SubmissionCalculator $submissionCalculator, Request $request): Response {
         $form = $this->getFormOrThrowNotFound($alias);
         $this->denyAccessUnlessGranted(FormVoter::Manage, $form);
 
@@ -72,7 +63,7 @@ class BackendController extends AbstractController {
             ->setFirstResult(($page - 1) * static::NumberOfItems);
 
         $paginator = new Paginator($query);
-        $count = count($paginator);
+        $count = is_countable($paginator) ? count($paginator) : 0;
         $pages = ceil($count / static::NumberOfItems);
 
         return $this->render('admin/show.html.twig', [
@@ -87,10 +78,8 @@ class BackendController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/{alias}/settings", name="admin_form_settings")
-     */
-    public function settings($alias, FormSettings $settings, Request $request) {
+    #[Route(path: '/{alias}/settings', name: 'admin_form_settings')]
+    public function settings($alias, FormSettings $settings, Request $request): RedirectResponse|Response {
         $form = $this->getFormOrThrowNotFound($alias);
         $this->denyAccessUnlessGranted(FormVoter::Manage, $form);
 
@@ -118,20 +107,16 @@ class BackendController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/{alias}/export", name="admin_export_form")
-     */
-    public function export($alias, CsvExport $csvExport) {
+    #[Route(path: '/{alias}/export', name: 'admin_export_form')]
+    public function export($alias, CsvExport $csvExport): Response {
         $form = $this->getFormOrThrowNotFound($alias);
         $this->denyAccessUnlessGranted(FormVoter::Manage, $form);
 
         return $csvExport->createCsvResponse($form);
     }
 
-    /**
-     * @Route("/{alias}/truncate", name="admin_truncate_form")
-     */
-    public function truncate($alias, Request $request) {
+    #[Route(path: '/{alias}/truncate', name: 'admin_truncate_form')]
+    public function truncate($alias, Request $request): RedirectResponse|Response {
         $form = $this->getFormOrThrowNotFound($alias);
         $this->denyAccessUnlessGranted(FormVoter::Manage, $form);
 
@@ -164,10 +149,8 @@ class BackendController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/{alias}/{id}/remove", name="admin_remove_record")
-     */
-    public function removeRecord($alias, $id, Request $request) {
+    #[Route(path: '/{alias}/{id}/remove', name: 'admin_remove_record')]
+    public function removeRecord($alias, $id, Request $request): RedirectResponse|Response {
         $form = $this->getFormOrThrowNotFound($alias);
         $this->denyAccessUnlessGranted(FormVoter::Manage, $form);
 

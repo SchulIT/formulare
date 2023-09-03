@@ -4,34 +4,15 @@ namespace App\Registry;
 
 class Form {
 
-    /** @var string */
-    private $alias;
-
-    /** @var string */
-    private $name;
+    /** @var string[] */
+    private array $introductionParagraphs = [ ];
 
     /** @var string[] */
-    private $introductionParagraphs = [ ];
+    private array $successParagraphs = [ ];
 
-    /** @var string[] */
-    private $successParagraphs = [ ];
+    private array $choices = [ ];
 
-    /** @var string */
-    private $formClass;
-
-    /** @var string[] */
-    private $items;
-
-    /** @var string */
-    private $adminRole;
-
-    public function __construct(string $alias, string $name, string $formClass, array $items, string $adminRole) {
-        $this->alias = $alias;
-        $this->name = $name;
-        $this->formClass = $formClass;
-        $this->items = $items;
-        $this->adminRole = $adminRole;
-    }
+    public function __construct(private readonly string $alias, private readonly string $name, private readonly string $formClass, private readonly array $items, private readonly string $adminRole) { }
 
     /**
      * @return string

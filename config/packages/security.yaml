@@ -1,7 +1,6 @@
 security:
-    encoders:
-        Symfony\Component\Security\Core\User\User:
-            algorithm: auto
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -17,30 +16,29 @@ security:
 
         dependencies:
             pattern: ^/dependencies
-            anonymous: ~
+            security: false
 
         login:
-            anonymous: ~
+            security: false
             pattern: ^/admin/saml/(login|discovery|metadata.xml)$
 
         logout:
-            anonymous: ~
+            security: false
             pattern: ^/admin/logout/success
 
         auth:
-            anonymous: ~
+            security: false
             pattern: ^/admin/auth
 
         backend:
             pattern: ^/admin
             provider: backend_users
-            light_saml_sp:
+            saml:
                 provider: backend_users
                 user_creator: App\Security\User\UserCreator
                 login_path: /admin/saml/login
                 check_path: /admin/saml/login_check
                 attribute_mapper: App\Security\User\AttributeMapper
-                token_factory: SchulIT\CommonBundle\Security\Factory\SamlSpTokenFactory
                 failure_path: /auth/error
             logout:
                 path: /admin/logout
