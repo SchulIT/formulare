@@ -11,10 +11,24 @@ use SchulIT\CommonBundle\Security\User\AbstractUserMapper;
 class AttributeMapper extends AbstractUserMapper implements AttributeMapperInterface {
 
     public function getAttributes(Response $response): array {
-        return [
-            'name_id' => $response->getFirstAssertion()->getSubject()->getNameID()->getValue(),
-            'services' => $this->getServices($response)
-        ];
+        $attributes = [ ];
+
+        foreach($response->getFirstAssertion()->getFirstAttributeStatement()->getAllAttributes() as $attribute) {
+            $values = $attribute->getAllAttributeValues();
+
+            if(count($values) > 1) {
+                $attributes[$attribute->getName()] = $values;
+            } else if(count($values) === 1) {
+                $attributes[$attribute->getName()] = $values[0];
+            } else {
+                $attributes[$attribute->getName()] = null;
+            }
+        }
+
+        $attributes['name_id'] = $response->getFirstAssertion()->getSubject()->getNameID()->getValue();
+        $attributes['services'] = $this->getServices($response);
+
+        return $attributes;
     }
 
     private function getServices(Response $response): array {
