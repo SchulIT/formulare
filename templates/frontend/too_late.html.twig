@@ -15,7 +15,7 @@
 
     <hr>
 
-    <p class="mb-0">{{ 'form.too_late.message'|trans({ '%date%': start|format_datetime })|raw }}</p>
+    <p class="mb-0">{{ 'form.too_late.message'|trans({ '%date%': end|format_datetime })|raw }}</p>
 {% endblock %}
 
 {% block footer_links %}

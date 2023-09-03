@@ -95,7 +95,8 @@ class FrontendController extends AbstractController {
 
         if($settings->getFormEndDate($formModel) !== null && $now > $settings->getFormEndDate($formModel)) {
             return $this->render('frontend/too_late.html.twig', [
-                'form' => $formModel
+                'form' => $formModel,
+                'end' => $settings->getFormEndDate($formModel)
             ]);
         }
 
