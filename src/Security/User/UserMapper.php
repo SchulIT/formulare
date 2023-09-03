@@ -50,8 +50,6 @@ class UserMapper extends AbstractUserMapper {
      * @return User
      */
     private function mapUserFromArray(User $user, array $data): User {
-        dump($data);
-
         $username = $data[ClaimTypes::COMMON_NAME];
         $firstname = $data[ClaimTypes::GIVEN_NAME];
         $lastname = $data[ClaimTypes::SURNAME];
