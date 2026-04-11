@@ -1,14 +1,10 @@
-controllers:
-  resource: ../src/Controller/
-  type: attribute
-
 lightsaml_sp:
   resource: "@LightSamlSpBundle/Resources/config/routing.yml"
   prefix: admin/saml
 
 composer:
   resource: "@ComposerDependencyListBundle/Controller"
-  type: annotation
+  type: attribute
   prefix: /dependencies
 
 logout:

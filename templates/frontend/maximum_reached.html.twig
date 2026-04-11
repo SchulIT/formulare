@@ -1,15 +1,9 @@
-{% extends "@Common/simple/main.html.twig" %}
-
-{% block css %}
-    <link rel="stylesheet" type="text/css" href="{{ preload(asset('build/frontend.css')) }}">
-{% endblock %}
-
-{% block title %}{{ form.name }}{% endblock %}
+{% extends "frontend/_main.html.twig" %}
 
 {% block content %}
 
     <div class="text-center">
-        <i class="fas fa-times fa-3x d-block text-secondary"></i>
+        <i class="fas fa-times fa-3x text-secondary"></i>
         <h4>{{ 'form.maximum_reached.title'|trans }}</h4>
     </div>
 
@@ -18,7 +12,3 @@
     <p class="mb-0">{{ 'form.maximum_reached.message'|trans() }}</p>
 {% endblock %}
 
-{% block footer_links %}
-    – <a href="{{ privacy_url }}" target="_blank">{{ 'privacy.label'|trans }}</a>
-    – <a href="{{ imprint_url }}" target="_blank">{{ 'imprint.label'|trans }}</a>
-{% endblock %}

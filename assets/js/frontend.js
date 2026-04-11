@@ -1,5 +1,3 @@
-require('../css/frontend.scss');
-
 import { Tooltip } from "bootstrap";
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -1,0 +1,27 @@
+{% extends "@Common/simple/main.html.twig" %}
+
+{% block title %}{{ formOptions.name }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ preload(asset('bundles/common/simple.css')) }}" type="text/css">
+    <link rel="stylesheet" href="{{ preload(asset('styles/frontend.css')) }}" type="text/css">
+    <link rel="stylesheet" href="{{ preload(asset('vendor/@fortawesome/fontawesome-free/css/all.css')) }}" type="text/css">
+
+    {% set customCSS = customCSS() %}
+    {% if customCSS is not empty %}
+        <style>
+            {{ customCSS }}
+        </style>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    {% block importmap %}
+        {{ importmap(['frontend', 'collection']) }}
+    {% endblock %}
+{% endblock %}
+
+{% block footer_links %}
+    – <a href="{{ privacy_url }}" target="_blank">{{ 'privacy.label'|trans }}</a>
+    – <a href="{{ imprint_url }}" target="_blank">{{ 'imprint.label'|trans }}</a>
+{% endblock %}

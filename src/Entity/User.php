@@ -116,22 +116,18 @@ class User implements UserInterface, Serializable, Stringable
     public function setData(string $key, $data): void {
         $this->data[$key] = $data;
     }
-    /**
-     * @inheritDoc
-     */
-    public function getPassword() {
+
+
+    public function getPassword(): string {
         return '';
     }
-    /**
-     * @inheritDoc
-     */
-    public function getSalt() {
+
+    public function getSalt(): null {
         return null;
     }
-    /**
-     * @inheritDoc
-     */
-    public function eraseCredentials() { }
+
+    public function eraseCredentials(): void { }
+
     public function getUserIdentifier(): string {
         return $this->getUsername();
     }

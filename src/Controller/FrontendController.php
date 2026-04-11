@@ -2,24 +2,23 @@
 
 namespace App\Controller;
 
-use App\Registry\FormNotFoundException;
-use LogicException;
 use App\Entity\Submission;
 use App\Registry\Form;
+use App\Registry\FormNotFoundException;
 use App\Registry\FormRegistry;
 use App\Seats\AvailableSeatsResolver;
 use App\Settings\FormSettings;
 use App\Submission\SubmissionCalculator;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use stdClass;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route(path: '/{formAlias}')]

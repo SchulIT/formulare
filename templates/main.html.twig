@@ -1,7 +1,7 @@
 {% extends '@Common/main.html.twig' %}
 
 {% block menu %}
-    {{ knp_menu_render(mainMenu, {'currentClass': 'active' }) }}
+    {{ knp_menu_render('mainMenu', {'currentClass': 'active' }) }}
 
     {% set systemMenu = knp_menu_get('systemMenu') %}
     {% if systemMenu.getChild('system').getChildren()|length > 0 %}
@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block submenu %}
-    {{ knp_menu_render(mainMenu, {'currentClass': 'active', 'template': '@Common/submenu.html.twig' }) }}
+    {{ knp_menu_render('mainMenu', {'currentClass': 'active', 'template': '@Common/submenu.html.twig' }) }}
 
     {{ knp_menu_render('systemMenu', {'currentClass': 'active', 'template': '@Common/submenu.html.twig' }) }}
     {{ knp_menu_render('servicesMenu', {'currentClass': 'active', 'template': '@Common/submenu.html.twig' }) }}
@@ -51,4 +51,25 @@
     <div class="d-show d-md-none mt-3">
         {{ block('breadcrumb') }}
     </div>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ preload(asset('bundles/common/app.css')) }}" type="text/css">
+    <link rel="stylesheet" href="{{ preload(asset('vendor/@fortawesome/fontawesome-free/css/all.css')) }}" type="text/css">
+
+    {% set customCSS = customCSS() %}
+    {% if customCSS is not empty %}
+        <style>
+            {{ customCSS }}
+        </style>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ preload(asset('menu.js')) }}"></script>
+    <script src="{{ preload(asset('icon-picker.js')) }}"></script>
+
+    {% block importmap %}
+        {{ importmap(['backend']) }}
+    {% endblock %}
 {% endblock %}

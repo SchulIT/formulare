@@ -1,15 +1,9 @@
-{% extends "@Common/simple/main.html.twig" %}
-
-{% block css %}
-    <link rel="stylesheet" type="text/css" href="{{ preload(asset('build/frontend.css')) }}">
-{% endblock %}
-
-{% block title %}{{ formOptions.name }}{% endblock %}
+{% extends "frontend/_main.html.twig" %}
 
 {% block content %}
 
     <div class="text-center">
-        <i class="fas fa-key fa-3x d-block text-secondary"></i>
+        <i class="fas fa-key fa-3x text-secondary"></i>
         <h4>{{ 'form.authentication.label'|trans }}</h4>
         <p>{{ 'form.authentication.info'|trans }}</p>
     </div>
@@ -34,9 +28,4 @@
         </div>
     </form>
 
-{% endblock %}
-
-{% block footer_links %}
-    – <a href="{{ privacy_url }}" target="_blank">{{ 'privacy.label'|trans }}</a>
-    – <a href="{{ imprint_url }}" target="_blank">{{ 'imprint.label'|trans }}</a>
 {% endblock %}
