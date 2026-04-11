@@ -87,3 +87,16 @@ privacy:
 
 imprint:
   label: Impressum
+
+administration:
+  label: Verwaltung
+
+settings:
+  label: Einstellungen
+  success: Einstellungen erfolgreich gespeichert
+
+  app:
+    label: Allgemeine Einstellungen
+    custom_css:
+      label: Benutzerdefiniertes CSS
+      help: Hier kann benutzerdefiniertes CSS eingebunden werden, um die Software nach eigenen Wünschen einzufärben.

@@ -46,8 +46,8 @@ class BackendController extends AbstractController {
         }
     }
 
-    #[Route(path: '/{alias}', name: 'admin_show_form')]
-    public function show($alias, FormSettings $settings, AvailableSeatsResolver $seatsResolver, SubmissionCalculator $submissionCalculator, Request $request): Response {
+    #[Route(path: '/{alias}', name: 'admin_show_form', priority: -100)]
+    public function show(string $alias, FormSettings $settings, AvailableSeatsResolver $seatsResolver, SubmissionCalculator $submissionCalculator, Request $request): Response {
         $form = $this->getFormOrThrowNotFound($alias);
         $this->denyAccessUnlessGranted(FormVoter::Manage, $form);
 
@@ -79,7 +79,7 @@ class BackendController extends AbstractController {
     }
 
     #[Route(path: '/{alias}/settings', name: 'admin_form_settings')]
-    public function settings($alias, FormSettings $settings, Request $request): RedirectResponse|Response {
+    public function settings(string $alias, FormSettings $settings, Request $request): RedirectResponse|Response {
         $form = $this->getFormOrThrowNotFound($alias);
         $this->denyAccessUnlessGranted(FormVoter::Manage, $form);
 
@@ -108,7 +108,7 @@ class BackendController extends AbstractController {
     }
 
     #[Route(path: '/{alias}/export', name: 'admin_export_form')]
-    public function export($alias, CsvExport $csvExport): Response {
+    public function export(string $alias, CsvExport $csvExport): Response {
         $form = $this->getFormOrThrowNotFound($alias);
         $this->denyAccessUnlessGranted(FormVoter::Manage, $form);
 
@@ -116,7 +116,7 @@ class BackendController extends AbstractController {
     }
 
     #[Route(path: '/{alias}/truncate', name: 'admin_truncate_form')]
-    public function truncate($alias, Request $request): RedirectResponse|Response {
+    public function truncate(string $alias, Request $request): RedirectResponse|Response {
         $form = $this->getFormOrThrowNotFound($alias);
         $this->denyAccessUnlessGranted(FormVoter::Manage, $form);
 
@@ -150,7 +150,7 @@ class BackendController extends AbstractController {
     }
 
     #[Route(path: '/{alias}/{id}/remove', name: 'admin_remove_record')]
-    public function removeRecord($alias, $id, Request $request): RedirectResponse|Response {
+    public function removeRecord(string $alias, $id, Request $request): RedirectResponse|Response {
         $form = $this->getFormOrThrowNotFound($alias);
         $this->denyAccessUnlessGranted(FormVoter::Manage, $form);
 

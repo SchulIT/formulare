@@ -59,12 +59,29 @@ services:
     SchulIT\CommonBundle\DarkMode\DarkModeManagerInterface:
         class: App\DarkMode\DarkModeManager
 
-    # MENU
+      # Menu
     App\Menu\Builder:
-        arguments:
-            $idpProfileUrl: '%env(IDP_PROFILE_URL)%'
-        tags:
-            - { name: knp_menu.menu_builder, method: mainMenu, alias: mainMenu }
-            - { name: knp_menu.menu_builder, method: userMenu, alias: userMenu }
-            - { name: knp_menu.menu_builder, method: servicesMenu, alias: servicesMenu }
-            - { name: knp_menu.menu_builder, method: systemMenu, alias: systemMenu }
+      tags:
+        - { name: knp_menu.menu_builder, method: mainMenu, alias: mainMenu }
+
+    App\Menu\ServicesMenuBuilder:
+      tags:
+        - { name: knp_menu.menu_builder, method: servicesMenu, alias: servicesMenu }
+
+    App\Menu\UserMenuBuilder:
+      arguments:
+        $idpProfileUrl: '%env(IDP_PROFILE_URL)%'
+      tags:
+        - { name: knp_menu.menu_builder, method: userMenu, alias: userMenu }
+
+    App\Menu\AdminMenuBuilder:
+      tags:
+        - { name: knp_menu.menu_builder, method: adminMenu, alias: adminMenu }
+
+    App\Menu\SettingsMenuBuilder:
+      tags:
+        - { name: knp_menu.menu_builder, method: settingsMenu, alias: settingsMenu }
+
+    SchulIT\CommonBundle\Menu\Voter:
+      tags:
+        - { name: knp_menu.voter }
